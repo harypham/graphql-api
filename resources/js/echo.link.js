@@ -1,5 +1,6 @@
 import {ApolloLink, Observable} from 'apollo-link';
 import Echo from 'laravel-echo/dist/echo';
+import Pusher from 'pusher-js';
 
 class EchoLink extends ApolloLink {
     constructor() {
