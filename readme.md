@@ -1,4 +1,4 @@
-<p align="center"><img src="ttps://miro.medium.com/max/577/1*VjnyfVHfe0zPJAe_8vrOkA.jpeg" width="400"></p>
+<p align="center"><img src="https://miro.medium.com/max/577/1*VjnyfVHfe0zPJAe_8vrOkA.jpeg" width="400"></p>
 
 ## About GraphQL
 

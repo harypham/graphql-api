@@ -42,7 +42,6 @@ class AuthMutator extends BaseAuthResolver
         $response = $this->makeRequest($credentials);
         $user = User::where(config('lighthouse-graphql-passport.username'), $args['username'])->firstOrFail();
         $response['user'] = $user;
-        \Nuwave\Lighthouse\Execution\Utils\Subscription::broadcast('userUpdated', $user);
         return $response;
     }
 

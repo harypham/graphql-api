@@ -24,7 +24,7 @@ extend type Query  {
     user(id: ID @eq): User @find
 }
 
-extend type Mutation  {
+extend type Mutation @middleware(checks: ["auth:api"]) {
     createUser(
         name: String! @rules(apply:["required", "min:4"]),
         email: String! @rules(apply: ["email","unique:users,email","max:255"]),
