@@ -1,0 +1,20 @@
+type Post {
+    id: ID!
+    title: String!
+    content: String!
+    user: User! @belongsTo
+    comments: [Comment!]! @hasMany
+}
+
+extend type Query {
+    posts: [Post!]! @paginate
+    postsSearchTitle(title: String! @where(operator: "like")): [Post!]! @all
+}
+
+extend type Mutation {
+    updatePost(
+        id: ID!,
+        title: String!,
+        content: String
+    ):Post @update
+}

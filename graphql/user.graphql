@@ -1,0 +1,45 @@
+input OrderByClause{
+    field: String!
+    order: SortOrder!
+}
+
+enum SortOrder {
+    ASC
+    DESC
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+    deleted_at: DateTime
+    posts: [Post]! @hasMany  @with(relation: "posts")
+}
+
+extend type Query  {
+    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all
+    user(id: ID @eq): User @find
+}
+
+extend type Mutation  {
+    createUser(
+        name: String! @rules(apply:["required", "min:4"]),
+        email: String! @rules(apply: ["email","unique:users,email","max:255"]),
+        password: String! @bcrypt @rules(apply:["required"])
+    ): User! @create
+
+    updateUser(
+        id: ID!,
+        name: String,
+    ): User @update   @broadcast(subscription: "userUpdated")
+
+    deleteUser(id: ID!): User @delete
+}
+
+extend type Subscription {
+    userUpdated(id: ID): User
+    @subscription(class: "App\\GraphQL\\Subscriptions\\UserUpdated")
+}

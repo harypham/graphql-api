@@ -1,0 +1,8 @@
+type Comment{
+    id: ID!
+    reply: String!
+    post: Post! @belongsTo
+}
+#extend type Query {}
+#extend type Mutation {}
+#extend type Subscription {}

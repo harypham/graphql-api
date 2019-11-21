@@ -1,0 +1,71 @@
+input LoginInput {
+    username: String!
+    password: String!
+}
+
+input RefreshTokenInput {
+    refresh_token: String
+}
+
+input ForgotPasswordInput {
+    email: String! @rules(apply: ["required", "email"])
+}
+
+input NewPasswordWithCodeInput {
+    email: String! @rules(apply: ["required", "email"])
+    token: String! @rules(apply: ["required", "string"])
+    password: String! @rules(apply: ["required", "confirmed", "min:6"])
+    password_confirmation: String!
+}
+
+input RegisterInput {
+    name: String! @rules(apply: ["required", "string"])
+    email: String! @rules(apply: ["required", "email"])
+    password: String! @rules(apply: ["required", "confirmed", "min:6"])
+    password_confirmation: String!
+}
+
+type AuthPayload {
+    access_token: String
+    refresh_token: String
+    expires_in: Int
+    token_type: String
+    user: User!
+}
+
+type RefreshTokenPayload {
+    access_token: String!
+    refresh_token: String!
+    expires_in: Int!
+    token_type: String!
+}
+
+type LogoutResponse {
+    status: String!
+    message: String
+}
+
+type ForgotPasswordResponse {
+    status: String!
+    message: String
+}
+
+extend type Mutation {
+    login(input: LoginInput @spread): AuthPayload!
+    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@login")
+
+    logout: LogoutResponse!
+    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@logout")
+
+    refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload!
+    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@refreshToken")
+
+    forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse!
+    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@forgotPassword")
+
+    register(input: RegisterInput @spread): AuthPayload!
+    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@register")
+
+    #    updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse!
+    #    @field(resolver: "App\\GraphQL\\Mutations\\AuthMutator@updateForgottenPassword")
+}
